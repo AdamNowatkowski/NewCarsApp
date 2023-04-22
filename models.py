@@ -1,5 +1,4 @@
 from bson import ObjectId
-import pandas as pd
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -38,5 +37,5 @@ class CarUpdate(MongoBaseModel):
 class CarDB(CarBase):
     pass
 
-car = {'brand': 'Fiat', 'make': '500', 'km': 400, 'cm3': 2000, 'price': 3000, 'year': 1998}
-cdb = CarDB(**car)
+# car = {'brand': 'Fiat', 'make': '500', 'km': 400, 'cm3': 2000, 'price': 3000, 'year': 1998}
+# cdb = CarDB(**car)
