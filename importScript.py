@@ -1,15 +1,13 @@
 import csv
 from fastapi.encoders import jsonable_encoder
 
-
-
-# dotenv environment variables
-from dotenv import dotenv_values
-
+from decouple import config
 from models import CarBase
 
-config = dotenv_values(".env")
 
+DB_URL = config('DB_URL', cast=str)
+DB_NAME = config('DB_NAME', cast=str)
+COLLECTION_NAME = config('COLLECTION_NAME', cast=str)
 # 
 
 # read csv
@@ -25,9 +23,9 @@ client = MongoClient()
 
 
 
-client = MongoClient(config['DB_URL'])
-db = client[config['DB_NAME']]
-cars = db[config['COLLECTION_NAME']]
+client = MongoClient(DB_URL)
+db = client[DB_NAME]
+cars = db[COLLECTION_NAME]
 
 
 for rec in name_records[51:250]:
