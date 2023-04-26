@@ -1,13 +1,16 @@
 // import './App.css';
 import styles from "./index.css"
 import React from 'react';
+import Layout from "./components/Layout";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="bg-slate-500 text-white text-left">This is TailwindStyle</h1>
-    </div>
-  );
+    <Layout>
+        <div>
+          This is the App
+        </div>
+    </Layout> 
+   );
 }
 
 export default App;
