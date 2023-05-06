@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Link } from "react-router-dom"
 const Card = ({car}) => {
     let {brand, price, make, year, km, cm3,_id} = car   
