@@ -1,4 +1,3 @@
-import React from 'react';
 
 import {useState} from 'react'
 import {useNavigate} from "react-router-dom";
@@ -6,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import Layout from "../components/Layout"
 import FormInput from '../components/FormInput';
 
-let BASE_URL = "https://agile-crag-18296.herokuapp.com/cars/"
+let BASE_URL = "http://127.0.0.1:8000/cars/"
 
 const NewCar = () => {
 

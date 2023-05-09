@@ -10,8 +10,8 @@ from models import CarBase, CarDB, CarUpdate
 
 router = APIRouter()
 
-@router.get("/", response_description="List all cars1")
-async def list_all_cars1(
+@router.get("/", response_description="List all cars")
+async def list_all_cars(
     request: Request, 
     min_price: int=0, 
     max_price:int=100000, 
