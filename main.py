@@ -43,7 +43,7 @@ async def shutdown_db_client():
 
 
 app.include_router(cars_router, prefix="/cars", tags=["cars"])
-app.include_router(cars_router, prefix="/users", tags=["users"])
+app.include_router(users_router, prefix="/users", tags=["users"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

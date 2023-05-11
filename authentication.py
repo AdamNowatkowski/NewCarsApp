@@ -10,7 +10,7 @@ class AuthHandler():
     secret = "FARMSTACKsupersecretstring"
     
     
-    def get_password_hash(self, password):
+    def hash_password(self, password):
         return self.pwd_context.hash(password)
     
     

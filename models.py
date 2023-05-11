@@ -36,8 +36,6 @@ class CarBase(MongoBaseModel):
     km: int = Field(...)
     cm3: int = Field(...)
 
-class CarUpdate(MongoBaseModel):
-    price: Optional[int] = None
 
 class CarDB(CarBase):
     owner: str = Field(...)
@@ -50,16 +48,20 @@ class Role(str, Enum):
     ADMIN = "ADMIN"
     
 class UserBase(MongoBaseModel):
+
     username: str = Field(..., min_length=3, max_length=15)
     email: str = Field(...)
     password: str = Field(...)
     role: Role
-    
+
     @validator("email")
     def valid_email(cls, v):
+
         try:
             email = validate_email(v).email
+            return email
         except EmailNotValidError as e:
+
             raise EmailNotValidError
 
 class LoginBase(BaseModel):

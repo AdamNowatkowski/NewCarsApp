@@ -13,7 +13,7 @@ async def register(request: Request, newUser: UserBase = Body(...)) -> UserBase:
     newUser = jsonable_encoder(newUser)
     
     if (
-        existing_mail := await request.app.mongodb["users"].find_one({"email": newUser.email}) is not None):
+        existing_mail := await request.app.mongodb["users"].find_one({"email": newUser['email']}) is not None):
         raise HTTPException(status_code=409, detail=f"User with {newUser['email']} already exists")
     
     if ( existing_username := await request.app.mongodb["users"].find_one({"username": newUser["username"]}) is not None):
