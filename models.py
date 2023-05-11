@@ -1,7 +1,10 @@
 from bson import ObjectId
 from pydantic import Field, BaseModel, validator, EmailStr
-from typing import Optional, Enum
+from typing import Optional
+from enum import Enum
 from email_validator import validate_email, EmailNotValidError
+
+
 
 class PyObjectId(ObjectId):
     @classmethod
