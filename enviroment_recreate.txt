@@ -1,0 +1,43 @@
+python -m venv MyLittleEnvironment
+venv\Scripts\activate.bat
+pip install fastapi motor dnspython pydantic uvicorn
+pip install python-decouple
+pip install email-validator
+pip install email_validator 
+pip install pyjwt passlib['bcrypt']
+
+
+npx create-react-app frontend
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init
+
+--------------------------------------------------------------------------------
+storona 92
+zmiana w pliku tailwind.config.js
+na:
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+--------------------------------------------------------------------------------
+zmiana w index.css na 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities{
+    .active-link{
+    @apply bg-yellow-500 p-4 shadow-md text-white
+    }
+    
+}
+--------------------------------------------------------------------------------
+
+npminstall postcss@latest
+npm install react-router dom@6
