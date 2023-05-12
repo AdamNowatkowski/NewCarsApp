@@ -41,3 +41,5 @@ zmiana w index.css na
 
 npminstall postcss@latest
 npm install react-router dom@6
+
+--test
