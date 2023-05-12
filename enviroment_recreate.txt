@@ -1,5 +1,5 @@
 python -m venv MyLittleEnvironment
-venv\Scripts\activate.bat
+MyLittleEnvironment\Scripts\activate
 pip install fastapi motor dnspython pydantic uvicorn
 pip install python-decouple
 pip install email-validator

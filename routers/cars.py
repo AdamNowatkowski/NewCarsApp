@@ -1,14 +1,16 @@
 from typing import Tuple, List, Optional
 
-from fastapi import APIRouter, Request, Body, status, HTTPException
+from fastapi import APIRouter, Request, Body, status, HTTPException, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 
 from models import CarBase, CarDB, CarUpdate
+from authentication import AuthHandler
 
 
 router = APIRouter()
+auth_handler = AuthHandler()
 
 @router.get("/", response_description="List all cars")
 async def list_all_cars(
@@ -17,6 +19,7 @@ async def list_all_cars(
     max_price:int=100000, 
     brand: Optional[str] = None,
     page:int=1,
+    userId=Depends(auth_handler.auth_wrapper)
     ) -> List[CarDB]:
 
     RESULTS_PER_PAGE = 25
@@ -27,7 +30,7 @@ async def list_all_cars(
     if brand:
         query["brand"] = brand
     
-    full_query = request.app.mongodb['cars1'].find(query).sort("_id",-1).skip(skip).limit(RESULTS_PER_PAGE)
+    full_query = request.app.mongodb['cars2'].find(query).sort("_id",-1).skip(skip).limit(RESULTS_PER_PAGE)
 
     results = [CarDB(**raw_car) async for raw_car in full_query]
 
@@ -38,11 +41,15 @@ async def list_all_cars(
 
 # create new car
 @router.post("/", response_description="Add new car")
-async def create_car(request: Request, car: CarBase = Body(...)):
+async def create_car(request: Request, 
+                     car: CarBase = Body(...),
+                     userId=Depends(auth_handler.auth_wrapper)):
     car = jsonable_encoder(car)
+    
+    car["owner"] = userId
   
-    new_car = await request.app.mongodb["cars1"].insert_one(car)
-    created_car = await request.app.mongodb["cars1"].find_one(
+    new_car = await request.app.mongodb["cars2"].insert_one(car)
+    created_car = await request.app.mongodb["cars2"].find_one(
         {"_id": new_car.inserted_id}
     )
 
@@ -51,18 +58,30 @@ async def create_car(request: Request, car: CarBase = Body(...)):
 # get car by ID
 @router.get("/{id}", response_description="Get a single car")
 async def show_car(id: str, request: Request):
-    if (car := await request.app.mongodb["cars1"].find_one({"_id": id})) is not None:
+    if (car := await request.app.mongodb["cars2"].find_one({"_id": id})) is not None:
         return CarDB(**car)
     raise HTTPException(status_code=404, detail=f"Car with {id} not found")
 
 @router.patch("/{id}", response_description="Update car")
-async def update_task(id: str, request: Request, car: CarUpdate = Body(...)):
+async def update_task(id: str, 
+                      request: Request, 
+                      car: CarUpdate = Body(...),
+                      userId=Depends(auth_handler.auth_wrapper)):
   
-    await request.app.mongodb['cars1'].update_one(
+    user = await request.app.mongodb["users"].find_one({"_id": userId})
+    
+    findCar = await request.app.mongodb["cars2"].find_one({"_id": id})
+    
+    if (findCar["owner"]!= userId) and user["role"] != "ADMIN":
+        raise HTTPException(status_code=403, detail="You are not authorized to perform this action, only for admins and owners")
+    
+    
+    
+    await request.app.mongodb['cars2'].update_one(
         {"_id": id}, {"$set": car.dict(exclude_unset=True)}
     )
 
-    if (car := await request.app.mongodb['cars1'].find_one({"_id": id})) is not None:
+    if (car := await request.app.mongodb['cars2'].find_one({"_id": id})) is not None:
         return CarDB(**car)
 
     raise HTTPException(status_code=404, detail=f"Car with {id} not found")
@@ -70,7 +89,7 @@ async def update_task(id: str, request: Request, car: CarUpdate = Body(...)):
 
 @router.delete("/{id}", response_description="Delete car")
 async def delete_task(id: str, request: Request):
-    delete_result = await request.app.mongodb['cars1'].delete_one({"_id": id})
+    delete_result = await request.app.mongodb['cars2'].delete_one({"_id": id})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content=None)
@@ -112,7 +131,7 @@ async def brand_price(brand: str,request: Request):
         }
     ]
 
-    full_query = request.app.mongodb['cars1'].aggregate(query)
+    full_query = request.app.mongodb['cars2'].aggregate(query)
 
     results = [el async for el in full_query]
     

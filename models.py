@@ -39,6 +39,7 @@ class CarBase(MongoBaseModel):
 
 class CarDB(CarBase):
     owner: str = Field(...)
+    # pass
     
 class CarUpdate(MongoBaseModel):
     price: Optional[int] = None
