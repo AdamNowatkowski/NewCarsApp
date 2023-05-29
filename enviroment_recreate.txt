@@ -8,8 +8,9 @@ pip install pyjwt passlib['bcrypt']
 
 
 npx create-react-app frontend
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init
+cd frontend
+npm install -D tailwindcss postcss@latest autoprefixer
+npx tailwindcss init - p
 
 --------------------------------------------------------------------------------
 storona 92
@@ -37,9 +38,26 @@ zmiana w index.css na
     }
     
 }
+
+--------------------------------------------------------------------------------
+npm i daisyui
+
+zmiana w pliku tailwind.config.js
+na:
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("daisyui)],
+}
+
 --------------------------------------------------------------------------------
 
-npminstall postcss@latest
-npm install react-router dom@6
+
+npm install postcss@latest
+npm install react-router-dom@6
 
 --test
