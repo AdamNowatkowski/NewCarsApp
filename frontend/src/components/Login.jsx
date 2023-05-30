@@ -61,7 +61,7 @@ const getUserData = async (token) => {
       <h2 className="text-x1 text-primary text-center font-bold my-2">
         Login Page
       </h2>
-      <form className="flex flex-col justify-center items-center">
+      <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
         <div className="flex flex-col justify-center items-center">
           <input 
             type="text" 

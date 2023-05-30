@@ -7,15 +7,11 @@ import HomePage from "./components/HomePage";
 
 function App() {
   return (
-    // <div className='App bg-zinc-500 min-h-screen flex flex-col justify-center items-center'>
-    //   <button className="btn btn-primary">App</button>
-    // </div>
-
     <Routes>
-      <Route path="/" elementName={<Layout />} >
-        <Route path="/" elementName={<HomePage />} />
-        <Route path="/login" elementName={<Login />} />
-        <Route path="/register" elementName={<Register />} />
+      <Route path="/" element={<Layout />} >
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </ Route>
     </Routes>
   );
